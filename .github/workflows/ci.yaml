@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '16.5'
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+          registry-url: 'https://npm.pkg.github.com'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install dependencies
+        run: |
+          npm install
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: persist
+
+  lint:
+    needs: [init]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: retrieve
+      - name: Checking for lint issues
+        run: |
+          npm run lint
+
+  unit-test:
+    needs: [init]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: retrieve
+      - name: Executing the unit tests
+        run: |
+          npm run test -- --run
+
+  typecheck:
+    needs: [init]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: retrieve
+      - name: Running typechecks
+        run: |
+          npm run typecheck
+
+  build:
+    needs: [init]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: retrieve
+      - name: Build project
+        run: |
+          npm run build

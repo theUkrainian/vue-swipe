@@ -1,0 +1,88 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseAs:
+        description: 'Release as'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+          - prerelease
+      dryRun:
+        description: 'Dry run'
+        required: false
+        type: boolean
+
+env:
+  NODE_VERSION: '16'
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      release_arg: ${{ steps.define_cmd_arg.outputs.release_arg }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # this token needs permission for full control of private repos
+          token: ${{ secrets.NPM_TOKEN }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+          registry-url: 'https://npm.pkg.github.com'
+        env:
+          # this token needs permission to read packages
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Define the command release-as arg
+        id: define_cmd_arg
+        run: |
+          RELEASE_AS_FLAG=$(${{ github.event.inputs.releaseAs  == 'auto' }} && echo '' || echo '--release-as ${{ github.event.inputs.releaseAs }}')
+          echo "::set-output name=release_arg::${RELEASE_AS_FLAG}"
+      - name: Install dependencies
+        run: npm install
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: persist
+
+  dry-run-release:
+    needs: [init]
+    if: ${{ github.event.inputs.dryRun == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: retrieve
+      - name: Dry run for ${{ github.event.inputs.releaseAs }}
+        run: npm run release -- --dry-run ${{ needs.init.outputs.release_arg }}
+
+  create-release:
+    needs: [init]
+    if: ${{ github.event.inputs.dryRun == 'false' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: bissolli/gh-action-persist-workspace@v1
+        with:
+          action: retrieve
+      - name: Configure committer
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - name: Generate a release for ${{ github.event.inputs.releaseAs }}
+        run: npm run release -- ${{ needs.init.outputs.release_arg }}
+      - name: Commit changes
+        run: git push --follow-tags origin main

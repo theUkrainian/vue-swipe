@@ -1,1 +1,3 @@
-# vue-swipe
+# Vue Swipe Directive
+
+## Work in progress...
