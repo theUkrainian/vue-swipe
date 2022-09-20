@@ -154,7 +154,6 @@ const handleTouchEnd = (
       Number(state.yDiff) > 0 ? SwipeDirectionEnum.UP : SwipeDirectionEnum.DOWN;
   }
 
-  console.log("eventType", eventType);
   /* If the rules are met, call the сallback method for the swipe action */
   if (eventType) {
     const changedTouche = changedTouches[0] || {};
@@ -165,9 +164,6 @@ const handleTouchEnd = (
       yStart: state.clientY || -1,
       yEnd: parseInt(changedTouche.clientY || -1, 10),
     };
-
-    console.log("eventType", eventType);
-    console.log("config.type", config.type);
 
     const eventMatched =
       typeof config.type === "object"
