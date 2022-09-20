@@ -15,11 +15,11 @@ export default defineConfig({
     environment: "jsdom",
   },
   server: {
-    port: 8080
+    port: 8080,
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/main.ts"),
+      entry: path.resolve(__dirname, "src/index.ts"),
       name: "vue-swipe",
       fileName: (format) => `index.${format}.js`,
     },
@@ -32,7 +32,7 @@ export default defineConfig({
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          vue: "Vue"
+          vue: "Vue",
         },
       },
     },
