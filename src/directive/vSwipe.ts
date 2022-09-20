@@ -165,13 +165,8 @@ const handleTouchEnd = (
       yStart: state.clientY || -1,
       yEnd: parseInt(changedTouche.clientY || -1, 10),
     };
-
-    const eventMatched =
-      typeof config.type === "object"
-        ? config.type.includes(eventType)
-        : config.type === eventType;
-
-    if (eventMatched) {
+    // TODO: add support of multiple events
+    if (config.type === eventType) {
       config.onSwipe(eventData);
     }
   }
