@@ -5,25 +5,33 @@ import { vSwipe } from "@/directive";
 
 const showLeftSidebar = ref(false)
 const showRightSidebar = ref(false)
+const showTopSidebar = ref(false)
+const showBottomSidebar = ref(false)
 
 const onShowLeftSidebar = () => {
-  showRightSidebar.value = false;
+  onClose();
   showLeftSidebar.value = true;
 }
 
 const onShowRightSidebar = () => {
-  showLeftSidebar.value = false;
+  onClose();
   showRightSidebar.value = true;
 }
 
 const onClose = () => {
   showLeftSidebar.value = false;
   showRightSidebar.value = false;
+  showTopSidebar.value = false;
+  showBottomSidebar.value = false;
+}
+
+const onShowTopSidebar = () => {
+  showBottomSidebar.value = true;
 }
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" v-swipe="{ type: 'up', threshold: 150, onSwipe: onShowTopSidebar }">
     <button @click="onShowLeftSidebar">
       Show Left Sidebar
     </button>
@@ -50,6 +58,24 @@ const onClose = () => {
   >
     <h2>Right sidebar!</h2>
     <p>Should be close on right swipe</p>
+  </Sidebar>
+
+  <Sidebar
+      position="top"
+      :isPanelOpen="showTopSidebar"
+      v-swipe="{ type: 'up', threshold: 150, onSwipe: onClose }"
+  >
+    <h2>Top sidebar!</h2>
+    <p>Should be close on up swipe</p>
+  </Sidebar>
+
+  <Sidebar
+      position="bottom"
+      :isPanelOpen="showBottomSidebar"
+      v-swipe="{ type: 'down', threshold: 150, onSwipe: onClose }"
+  >
+    <h2>Bottom sidebar!</h2>
+    <p>Should be close on down swipe</p>
   </Sidebar>
 </template>
 
