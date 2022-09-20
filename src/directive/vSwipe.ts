@@ -30,6 +30,7 @@ const isScrolling = (
   swipeType: SwipeConfigs["type"],
   element: Element
 ): boolean => {
+  // TODO: add support of multiple events
   switch (swipeType) {
     case SwipeDirectionEnum.DOWN:
       return element.scrollTop > 0;
