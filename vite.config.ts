@@ -1,15 +1,9 @@
-import { fileURLToPath, URL } from "url";
 import { defineConfig } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
   plugins: [vue()],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
-  },
   // @ts-ignore
   test: {
     environment: "jsdom",
@@ -20,7 +14,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
-      name: "vue-swipe",
+      name: "vue-directive-swipe",
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
