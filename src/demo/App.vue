@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Sidebar from './sidebar/Sidebar.vue';
-import { vSwipe } from "@/directive";
+import { vSwipe, EventData } from "@/directive";
 
+const threshold = 150;
 const showLeftSidebar = ref(false)
 const showRightSidebar = ref(false)
 const showTopSidebar = ref(false)
@@ -25,13 +26,17 @@ const onClose = () => {
   showBottomSidebar.value = false;
 }
 
-const onShowTopSidebar = () => {
-  showBottomSidebar.value = true;
+const onShowTopSidebar = ({ dir }: EventData) => {
+  if(dir == 'down') {
+    showTopSidebar.value = true;
+  } else {
+    showBottomSidebar.value = true;
+  }
 }
 </script>
 
 <template>
-  <div class="container" v-swipe="{ type: 'up', threshold: 150, onSwipe: onShowTopSidebar }">
+  <div class="container" v-swipe="{ type: 'down', threshold, onSwipe: onShowTopSidebar }">
     <button @click="onShowLeftSidebar">
       Show Left Sidebar
     </button>
@@ -45,7 +50,7 @@ const onShowTopSidebar = () => {
   <Sidebar
       position="left"
       :isPanelOpen="showLeftSidebar"
-      v-swipe="{ type: 'left', threshold: 150, onSwipe: onClose }"
+      v-swipe="{ type: 'left', threshold, onSwipe: onClose }"
   >
     <h2>Left sidebar!</h2>
     <p>Should be close on left swipe</p>
@@ -54,7 +59,7 @@ const onShowTopSidebar = () => {
   <Sidebar
       position="right"
       :isPanelOpen="showRightSidebar"
-      v-swipe="{ type: 'right', threshold: 150, onSwipe: onClose }"
+      v-swipe="{ type: 'right', threshold, onSwipe: onClose }"
   >
     <h2>Right sidebar!</h2>
     <p>Should be close on right swipe</p>
@@ -63,7 +68,7 @@ const onShowTopSidebar = () => {
   <Sidebar
       position="top"
       :isPanelOpen="showTopSidebar"
-      v-swipe="{ type: 'up', threshold: 150, onSwipe: onClose }"
+      v-swipe="{ type: 'up', threshold, onSwipe: onClose }"
   >
     <h2>Top sidebar!</h2>
     <p>Should be close on up swipe</p>
@@ -72,7 +77,7 @@ const onShowTopSidebar = () => {
   <Sidebar
       position="bottom"
       :isPanelOpen="showBottomSidebar"
-      v-swipe="{ type: 'down', threshold: 150, onSwipe: onClose }"
+      v-swipe="{ type: 'down', threshold, onSwipe: onClose }"
   >
     <h2>Bottom sidebar!</h2>
     <p>Should be close on down swipe</p>

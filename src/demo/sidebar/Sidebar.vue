@@ -18,7 +18,7 @@ const enterLeaveClass = computed(() => {
 
 <template>
   <div class="sidebar">
-    <transition name="slide"  :leave-active-class="enterLeaveClass">
+    <transition name="slide" enter-active-class="slide-enter-active"  :leave-active-class="enterLeaveClass">
       <div v-if="props.isPanelOpen" :class="`sidebar-panel ${props.position}`">
         <slot/>
         <ul>
@@ -35,7 +35,7 @@ const enterLeaveClass = computed(() => {
 <style lang="scss">
 .slide-enter-active,
 {
-  transition: transform 1.2s ease;
+  transition: all 200ms ease-in 0s
 }
 
 .on-left-slide-leave-to,
@@ -43,7 +43,7 @@ const enterLeaveClass = computed(() => {
 .on-top-slide-leave-to,
 .on-bottom-slide-leave-to
 {
-  transition: all 150ms ease-in 0s
+  transition: all 200ms ease-in 0s
 }
 
 .on-left-slide-leave-to {
