@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "vue": "^3.2.37",
+    "vue-directive-swipe": "^0.0.2",
     "vue-tsc": "^0.40.13"
   },
   "devDependencies": {
