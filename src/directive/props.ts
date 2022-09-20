@@ -9,7 +9,7 @@ export type EventData = {
 };
 
 export type SwipeConfigs = {
-  type: `${SwipeDirectionEnum}`;
+  type: `${SwipeDirectionEnum}` | `${SwipeDirectionEnum}`[];
   threshold: number;
   timeout: number;
   ignore: boolean;

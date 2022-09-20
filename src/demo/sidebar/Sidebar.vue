@@ -2,12 +2,14 @@
 
 import {computed} from "vue";
 
-const props = defineProps<{isPanelOpen: boolean, position: 'left' | 'right'}>()
+const props = defineProps<{isPanelOpen: boolean, position: 'left' | 'right' | 'top' | 'bottom'}>()
 
 const enterLeaveClass = computed(() => {
   const classMap = {
     'left': 'on-left-slide-leave-to',
-    'right': 'on-right-slide-leave-to'
+    'right': 'on-right-slide-leave-to',
+    'top': 'on-top-slide-leave-to',
+    'bottom': 'on-bottom-slide-leave-to',
   }
   return classMap[props.position]
 })
@@ -16,7 +18,7 @@ const enterLeaveClass = computed(() => {
 
 <template>
   <div class="sidebar">
-    <transition name="slide"  :leave-active-class="enterLeaveClass">
+    <transition name="slide" enter-active-class="slide-enter-active"  :leave-active-class="enterLeaveClass">
       <div v-if="props.isPanelOpen" :class="`sidebar-panel ${props.position}`">
         <slot/>
         <ul>
@@ -33,12 +35,15 @@ const enterLeaveClass = computed(() => {
 <style lang="scss">
 .slide-enter-active,
 {
-  transition: transform 1.2s ease;
+  transition: all 200ms ease-in 0s
 }
 
 .on-left-slide-leave-to,
-.on-right-slide-leave-to {
-  transition: all 150ms ease-in 0s
+.on-right-slide-leave-to,
+.on-top-slide-leave-to,
+.on-bottom-slide-leave-to
+{
+  transition: all 200ms ease-in 0s
 }
 
 .on-left-slide-leave-to {
@@ -49,21 +54,45 @@ const enterLeaveClass = computed(() => {
   transform: translateX(100%);
 }
 
+.on-top-slide-leave-to {
+  transform: translateY(-100%);
+}
+
+.on-bottom-slide-leave-to {
+  transform: translateY(100%);
+}
+
 .sidebar-panel {
   background-color: #130f40;
   position: absolute;
   height: 100vh;
-  top: 0;
   z-index: 999;
-  padding: 3rem 20px 2rem 20px;
+  padding: 2rem;
+  box-sizing: border-box;
   width: 50%;
 
-  &.left {
+  &.top,
+  &.left,
+  &.bottom {
     left: 0;
+  }
+
+  &.top {
+    top: 0
   }
 
   &.right {
     right: 0;
+  }
+
+  &.bottom {
+    bottom: 0
+  }
+
+  &.top,
+  &.bottom {
+    height: 50%;
+    width: 100vw;
   }
 }
 

@@ -1,7 +1,7 @@
-import { reactive } from 'vue';
-import { SwipeDirectionEnum } from './type.enum';
-import type { DirectiveBinding } from '@vue/runtime-core';
-import type { EventData, SwipeConfigs, SwipeState } from './props';
+import { reactive } from "vue";
+import { SwipeDirectionEnum } from "./type.enum";
+import type { DirectiveBinding } from "@vue/runtime-core";
+import type { EventData, SwipeConfigs, SwipeState } from "./props";
 
 const SWIPE_THRESHOLD_DEFAULT = 100;
 const SWIPE_TIMEOUT_DEFAULT = 500;
@@ -11,7 +11,7 @@ const DEFAULT_STATE = {
   xDiff: null,
   yDiff: null,
   startEl: null,
-  timeDown: 0
+  timeDown: 0,
 };
 
 /**
@@ -26,7 +26,11 @@ const DEFAULT_STATE = {
  *
  * @returns {boolean}
  */
-const isScrolling = (swipeType: SwipeConfigs['type'], element: Element): boolean => {
+const isScrolling = (
+  swipeType: SwipeConfigs["type"],
+  element: Element
+): boolean => {
+  // TODO: add support of multiple events
   switch (swipeType) {
     case SwipeDirectionEnum.DOWN:
       return element.scrollTop > 0;
@@ -129,7 +133,7 @@ const handleTouchEnd = (
     return;
   }
 
-  let eventType: any = '';
+  let eventType: any = "";
 
   const swipeThreshold = config.threshold || SWIPE_THRESHOLD_DEFAULT;
   const swipeTimeout = config.timeout || SWIPE_TIMEOUT_DEFAULT;
@@ -159,10 +163,15 @@ const handleTouchEnd = (
       xStart: state.clientX || -1,
       xEnd: parseInt(changedTouche.clientX || -1, 10),
       yStart: state.clientY || -1,
-      yEnd: parseInt(changedTouche.clientY || -1, 10)
+      yEnd: parseInt(changedTouche.clientY || -1, 10),
     };
 
-    if (config.type === eventType) {
+    const eventMatched =
+      typeof config.type === "object"
+        ? config.type.includes(eventType)
+        : config.type === eventType;
+
+    if (eventMatched) {
       config.onSwipe(eventData);
     }
   }
@@ -180,25 +189,25 @@ const vSwipe = {
     if (config.ignore) return;
 
     const state = reactive({
-      ...DEFAULT_STATE
+      ...DEFAULT_STATE,
     });
 
     el.addEventListener(
-      'touchstart',
+      "touchstart",
       (e) => {
         handleTouchStart(e, config, state);
       },
       false
     );
     el.addEventListener(
-      'touchmove',
+      "touchmove",
       (e) => {
         handleTouchMove(e, config, state);
       },
       false
     );
     el.addEventListener(
-      'touchend',
+      "touchend",
       (e) => {
         handleTouchEnd(e, config, state);
       },
@@ -206,10 +215,10 @@ const vSwipe = {
     );
   },
   beforeUnmount: (el: HTMLElement) => {
-    el.removeEventListener('touchstart', handleTouchStart, false);
-    el.removeEventListener('touchmove', handleTouchMove, false);
-    el.removeEventListener('touchend', handleTouchEnd, false);
-  }
+    el.removeEventListener("touchstart", handleTouchStart, false);
+    el.removeEventListener("touchmove", handleTouchMove, false);
+    el.removeEventListener("touchend", handleTouchEnd, false);
+  },
 };
 
 export default vSwipe;
