@@ -11,9 +11,15 @@ export default defineConfig({
   server: {
     port: 8080,
   },
+  esbuild: {
+    minifySyntax: true,
+  },
+  transpileDependencies: ["vuetify"],
+  mode: "production",
   build: {
+    minify: true,
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: path.resolve(__dirname, "src/main.ts"),
       name: "vue-directive-swipe",
       fileName: (format) => `index.${format}.js`,
     },

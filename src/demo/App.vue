@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Sidebar from './sidebar/Sidebar.vue';
-import { vSwipe, EventData } from "@/directive";
+import { vSwipe, EventData } from "../directive";
 
 const threshold = 150;
 const showLeftSidebar = ref(false)
