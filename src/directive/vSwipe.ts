@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 import { SwipeDirectionEnum } from "./type.enum";
-import type { DirectiveBinding } from "@vue/runtime-core";
+import type { DirectiveBinding } from "vue";
 import type { EventData, SwipeConfigs, SwipeState } from "./props";
 
 const SWIPE_THRESHOLD_DEFAULT = 100;

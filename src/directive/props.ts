@@ -1,4 +1,4 @@
-import type { SwipeDirectionEnum } from './type.enum';
+import type { SwipeDirectionEnum } from "./type.enum";
 
 export type EventData = {
   dir: `${SwipeDirectionEnum}`;

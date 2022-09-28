@@ -1,26 +1,31 @@
 <script setup lang="ts">
+import { computed } from "vue";
 
-import {computed} from "vue";
-
-const props = defineProps<{isPanelOpen: boolean, position: 'left' | 'right' | 'top' | 'bottom'}>()
+const props = defineProps<{
+  isPanelOpen: boolean;
+  position: "left" | "right" | "top" | "bottom";
+}>();
 
 const enterLeaveClass = computed(() => {
   const classMap = {
-    'left': 'on-left-slide-leave-to',
-    'right': 'on-right-slide-leave-to',
-    'top': 'on-top-slide-leave-to',
-    'bottom': 'on-bottom-slide-leave-to',
-  }
-  return classMap[props.position]
-})
-
+    left: "on-left-slide-leave-to",
+    right: "on-right-slide-leave-to",
+    top: "on-top-slide-leave-to",
+    bottom: "on-bottom-slide-leave-to",
+  };
+  return classMap[props.position];
+});
 </script>
 
 <template>
   <div class="sidebar">
-    <transition name="slide" enter-active-class="slide-enter-active"  :leave-active-class="enterLeaveClass">
+    <transition
+      name="slide"
+      enter-active-class="slide-enter-active"
+      :leave-active-class="enterLeaveClass"
+    >
       <div v-if="props.isPanelOpen" :class="`sidebar-panel ${props.position}`">
-        <slot/>
+        <slot />
         <ul>
           <li>Menu</li>
           <li>Outlets</li>
@@ -33,17 +38,15 @@ const enterLeaveClass = computed(() => {
 </template>
 
 <style lang="scss">
-.slide-enter-active,
-{
-  transition: all 200ms ease-in 0s
+.slide-enter-active {
+  transition: all 200ms ease-in 0s;
 }
 
 .on-left-slide-leave-to,
 .on-right-slide-leave-to,
 .on-top-slide-leave-to,
-.on-bottom-slide-leave-to
-{
-  transition: all 200ms ease-in 0s
+.on-bottom-slide-leave-to {
+  transition: all 200ms ease-in 0s;
 }
 
 .on-left-slide-leave-to {
@@ -78,7 +81,7 @@ const enterLeaveClass = computed(() => {
   }
 
   &.top {
-    top: 0
+    top: 0;
   }
 
   &.right {
@@ -86,7 +89,7 @@ const enterLeaveClass = computed(() => {
   }
 
   &.bottom {
-    bottom: 0
+    bottom: 0;
   }
 
   &.top,
@@ -107,5 +110,3 @@ ul {
   }
 }
 </style>
-
-
