@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Sidebar from "./sidebar/Sidebar.vue";
+import Sidebar from "./sidebar/SidebarContainer.vue";
 import { vSwipe, EventData } from "../directive";
 
 const threshold = 150;
