@@ -28,7 +28,7 @@ const DEFAULT_STATE = {
  */
 const isScrolling = (
   swipeType: SwipeConfigs["type"],
-  element: Element
+  element: HTMLElement
 ): boolean => {
   // TODO: add support of multiple events
   switch (swipeType) {
@@ -62,13 +62,14 @@ const handleTouchStart = (
   if (
     !state ||
     !config ||
-    isScrolling(config.type, event.currentTarget as Element)
+    isScrolling(config.type, event.currentTarget as HTMLElement)
   ) {
     return;
   }
 
   state.timeDown = Date.now();
-  state.startEl = event.currentTarget;
+  // @ts-ignore
+  state.startEl = (event as Event).currentTarget;
   state.clientX = event.touches[0].clientX;
   state.clientY = event.touches[0].clientY;
   state.xDiff = 0;
@@ -95,7 +96,7 @@ const handleTouchMove = (
     !state ||
     !state.clientX ||
     !state.clientY ||
-    isScrolling(config.type, event.currentTarget as Element)
+    isScrolling(config.type, event.currentTarget as HTMLElement)
   ) {
     return;
   }
@@ -120,7 +121,7 @@ const handleTouchMove = (
  */
 
 const handleTouchEnd = (
-  event: Record<string, any>,
+  event: Record<string, Event>,
   config?: SwipeConfigs,
   state?: SwipeState
 ) => {
@@ -128,7 +129,8 @@ const handleTouchEnd = (
     !config ||
     !state ||
     state.startEl !== event.currentTarget ||
-    isScrolling(config.type, event.currentTarget as Element)
+    // @ts-ignore
+    isScrolling(config.type, event.currentTarget as HTMLElement)
   ) {
     return;
   }
@@ -157,6 +159,7 @@ const handleTouchEnd = (
 
   /* If the rules are met, call the сallback method for the swipe action */
   if (eventType) {
+    // @ts-ignore
     const changedTouche = changedTouches[0] || {};
     const eventData: EventData = {
       dir: eventType,
@@ -190,6 +193,7 @@ const vSwipe = {
     el.addEventListener(
       "touchstart",
       (e) => {
+        // @ts-ignore
         handleTouchStart(e, config, state);
       },
       false
@@ -197,6 +201,7 @@ const vSwipe = {
     el.addEventListener(
       "touchmove",
       (e) => {
+        // @ts-ignore
         handleTouchMove(e, config, state);
       },
       false
@@ -204,6 +209,7 @@ const vSwipe = {
     el.addEventListener(
       "touchend",
       (e) => {
+        // @ts-ignore
         handleTouchEnd(e, config, state);
       },
       false
@@ -212,6 +218,7 @@ const vSwipe = {
   beforeUnmount: (el: HTMLElement) => {
     el.removeEventListener("touchstart", handleTouchStart, false);
     el.removeEventListener("touchmove", handleTouchMove, false);
+    // @ts-ignore
     el.removeEventListener("touchend", handleTouchEnd, false);
   },
 };
