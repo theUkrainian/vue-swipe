@@ -28,6 +28,10 @@ module.exports = {
   parserOptions: {
     "project": "./tsconfig.json",
   },
+  rules: {
+    "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/no-explicit-any": 0
+  },
   /**
    * These files need to be ignored in order to not create a conflict between
    * the files that tsconfig reads and the files that eslint reads, if they

@@ -22,5 +22,5 @@ export type SwipeState = {
   xDiff: number | null;
   yDiff: number | null;
   timeDown: number;
-  startEl: any;
+  startEl: Event;
 };
