@@ -4,6 +4,6 @@ updates:
     directory: '/'
     registries: '*'
     schedule:
-      interval: 'weekly'
+      interval: 'daily'
       time: '01:00'
     open-pull-requests-limit: 30
