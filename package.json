@@ -24,7 +24,7 @@
     }
   },
   "dependencies": {
-    "vue": "^3.2.37",
+    "vue": "^3.2.40",
     "vue-tsc": "^0.40.13"
   },
   "devDependencies": {
