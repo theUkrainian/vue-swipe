@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
-    "@types/jsdom": "^20.0.0",
+    "@types/jsdom": "^20.0.1",
     "@types/node": "^18.11.7",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
@@ -43,7 +43,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-vue": "^9.6.0",
     "husky": "^8.0.1",
-    "jsdom": "^20.0.1",
+    "jsdom": "^20.0.3",
     "prettier": "^2.7.1",
     "sass": "^1.55.0",
     "standard-version": "^9.5.0",
