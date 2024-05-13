@@ -48,7 +48,7 @@
     "sass": "^1.69.4",
     "standard-version": "^9.5.0",
     "terser": "^5.22.0",
-    "tsc-alias": "^1.8.8",
+    "tsc-alias": "^1.8.9",
     "typescript": "^5.2.2",
     "vite": "^3.2.1",
     "vitest": "^0.34.6"
